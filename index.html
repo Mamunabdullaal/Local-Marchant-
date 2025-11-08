@@ -1,183 +1,2022 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bag Size Comparison Calculator</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      text-align: center;
-      background-color: #121212;
-      color: #e0e0e0;
-    }
-    .container {
-      margin: 50px auto;
-      padding: 20px;
-      max-width: 600px;
-      background: #1e1e1e;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-      border-radius: 8px;
-    }
-    h1 {
-      color: #ff6f00;
-    }
-    .form-section {
-      margin: 20px 0;
-    }
-    label {
-      font-weight: bold;
-      color: #ffc107;
-    }
-    input {
-      width: 80px;
-      padding: 8px;
-      margin: 5px;
-      border: 1px solid #555;
-      border-radius: 4px;
-      background-color: #2c2c2c;
-      color: #e0e0e0;
-    }
-    select {
-      padding: 8px;
-      margin: 5px;
-      border: 1px solid #555;
-      border-radius: 4px;
-      background-color: #2c2c2c;
-      color: #e0e0e0;
-    }
-    button {
-      padding: 10px 20px;
-      margin-top: 10px;
-      background-color: #ff6f00;
-      color: #121212;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 1em;
-    }
-    button:hover {
-      background-color: #ffa000;
-    }
-    .result {
-      margin-top: 20px;
-      font-size: 1.2em;
-      color: #e0e0e0;
-    }
-    .temu {
-      color: #ff6f00;
-      font-weight: bold;
-    }
-    .other {
-      color: #80cbc4;
-      font-weight: bold;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temu Warehouse Rules</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1565c0;
+            --secondary-color: #0d47a1;
+            --accent-color: #ff5722;
+            --light-bg: #f5f7fa;
+            --dark-text: #263238;
+            --light-text: #546e7a;
+            --border-color: #e0e0e0;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--dark-text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: white;
+            box-shadow: var(--shadow);
+            padding: 20px 0;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+        }
+
+        .search-container {
+            position: relative;
+            width: 40%;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 45px 12px 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.2);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--light-text);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .sidebar {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            padding: 25px;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .category-list {
+            list-style: none;
+        }
+
+        .category-item {
+            margin-bottom: 10px;
+        }
+
+        .category-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border-radius: 6px;
+            color: var(--dark-text);
+            text-decoration: none;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .category-link:hover {
+            background-color: rgba(21, 101, 192, 0.1);
+            color: var(--primary-color);
+        }
+
+        .category-link.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .category-link i {
+            margin-right: 12px;
+            font-size: 1.1rem;
+        }
+
+        .category-section {
+            margin-bottom: 20px;
+        }
+
+        .category-section-title {
+            color: var(--secondary-color);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            padding-left: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .content-area {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            padding: 30px;
+            min-height: 500px;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+
+        .content-title {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+        }
+
+        .last-updated {
+            color: var(--light-text);
+            font-size: 0.9rem;
+        }
+
+        .rule-content {
+            line-height: 1.8;
+        }
+
+        .rule-content h3 {
+            color: var(--secondary-color);
+            margin: 25px 0 15px;
+            font-size: 1.4rem;
+        }
+
+        .rule-content h4 {
+            color: var(--accent-color);
+            margin: 20px 0 10px;
+            font-size: 1.2rem;
+        }
+
+        .rule-content p {
+            margin-bottom: 15px;
+        }
+
+        .rule-content ul, .rule-content ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        .rule-content li {
+            margin-bottom: 8px;
+        }
+
+        .rule-content img {
+            max-width: 100%;
+            border-radius: 6px;
+            margin: 15px 0;
+            box-shadow: var(--shadow);
+        }
+
+        .rule-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .rule-content th, .rule-content td {
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            text-align: left;
+        }
+
+        .rule-content th {
+            background-color: rgba(21, 101, 192, 0.1);
+            color: var(--secondary-color);
+        }
+
+        .rule-content tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        .highlight {
+            background-color: rgba(255, 193, 7, 0.2);
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        .note-box {
+            background-color: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .note-box p {
+            margin: 0;
+        }
+
+        .welcome-message {
+            text-align: center;
+            padding: 50px 20px;
+            color: var(--light-text);
+        }
+
+        .welcome-message i {
+            font-size: 4rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .welcome-message h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--dark-text);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--light-text);
+            font-size: 0.9rem;
+            margin-top: 30px;
+        }
+
+        .subcategory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .subcategory-card {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .subcategory-card:hover {
+            box-shadow: var(--shadow);
+            transform: translateY(-3px);
+        }
+
+        .subcategory-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .subcategory-card h4 i {
+            margin-right: 10px;
+        }
+
+        .subcategory-card p {
+            color: var(--light-text);
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: var(--light-text);
+        }
+
+        .breadcrumb a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .breadcrumb .separator {
+            margin: 0 10px;
+        }
+
+        @media (max-width: 992px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: static;
+                max-height: none;
+            }
+            
+            .search-container {
+                width: 60%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .search-container {
+                width: 100%;
+            }
+            
+            .logo h1 {
+                font-size: 1.5rem;
+            }
+            
+            .subcategory-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .content-area {
+                padding: 20px;
+            }
+            
+            .content-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Bag Size Comparison Calculator</h1>
-    <div class="form-section">
-      <h3><span class="temu">Temu (Bag Size)</span></h3>
-      <label for="temu-length">Length:</label>
-      <input type="number" id="temu-length" placeholder="e.g., 22"><br>
-      <label for="temu-width">Width:</label>
-      <input type="number" id="temu-width" placeholder="e.g., 30"><br>
-      <label for="temu-height">Height:</label>
-      <input type="number" id="temu-height" placeholder="e.g., 13"><br>
-      <label for="temu-unit">Unit:</label>
-      <select id="temu-unit">
-        <option value="cm">cm</option>
-        <option value="inches">inches</option>
-        <option value="ft">ft</option>
-        <option value="m">m</option>
-        <option value="mm">mm</option>
-      </select>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-warehouse"></i>
+                <h1>Temu Warehouse Rules</h1>
+            </div>
+            <div class="search-container">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search rules...">
+                <button class="search-btn" id="searchBtn">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="dashboard">
+            <aside class="sidebar">
+                <h2>Rule Categories</h2>
+                <div class="category-list" id="categoryList">
+                    <!-- Categories will be dynamically added here -->
+                </div>
+            </aside>
+
+            <main class="content-area" id="contentArea">
+                <div class="welcome-message">
+                    <i class="fas fa-book-open"></i>
+                    <h2>Welcome to Temu Warehouse Rules</h2>
+                    <p>Select a category from the sidebar to view the rules or use the search function to find specific information.</p>
+                </div>
+            </main>
+        </div>
     </div>
-    <div class="form-section">
-      <h3><span class="other">Other (Bag Size)</span></h3>
-      <label for="other-length">Length:</label>
-      <input type="number" id="other-length" placeholder="e.g., 28"><br>
-      <label for="other-width">Width:</label>
-      <input type="number" id="other-width" placeholder="e.g., 13"><br>
-      <label for="other-height">Height:</label>
-      <input type="number" id="other-height" placeholder="e.g., 19"><br>
-      <label for="other-unit">Unit:</label>
-      <select id="other-unit">
-        <option value="cm">cm</option>
-        <option value="inches">inches</option>
-        <option value="ft">ft</option>
-        <option value="m">m</option>
-        <option value="mm">mm</option>
-      </select>
-    </div>
-    <button onclick="compareSizes()">Compare</button>
-    <div class="result" id="result"></div>
-  </div>
 
-  <script>
-    // Conversion factors to convert units to centimeters
-    const conversionFactors = {
-      inches: 2.54, // 1 inch = 2.54 cm
-      ft: 30.48, // 1 foot = 30.48 cm
-      m: 100, // 1 meter = 100 cm
-      mm: 0.1, // 1 mm = 0.1 cm
-      cm: 1 // 1 cm = 1 cm
-    };
+    <footer class="footer">
+        <p>© 2023 Temu Warehouse Rules. All rights reserved.</p>
+    </footer>
 
-    // Function to convert the input value to centimeters
-    function convertToCm(value, unit) {
-      return value * conversionFactors[unit] || value;
-    }
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Categories data with sections
+            const categories = [
+                {
+                    id: 'rejection-reasons',
+                    title: 'Rejection Reasons',
+                    icon: 'fa-times-circle',
+                    summary: 'Guidelines for rejecting merchants when items are received but not refunded.',
+                    content: `
+                        <h3>2.4 New reason options for rejecting merchants</h3>
+                        <p><strong>Background:</strong> When "Received all/part of the purchased item" is selected on the annotation ticket, customer service needs to choose a reason to reject the merchant. This rejection reason will be displayed on the merchant page along with the required supplementary materials the merchant must provide.</p>
+                        
+                        <div class="note-box">
+                            <p><strong>[Updated on September 6, 2025]</strong> Added a new option: [The merchant's evidence is valid]. [Reasons for rejection] will now prioritize options relevant to cases where the merchant's warehouse has not issued a refund. Selecting [Other reasons] will display all available options.</p>
+                        </div>
+                        
+                        <h4>Scenarios of the merchant warehouse not refunding</h4>
+                        <p><strong>Selectable rejection reasons by Customer Service</strong></p>
+                        
+                        <h4>Applicable to all not refunding reasons of merchant warehouse</h4>
+                        <ul>
+                            <li>Reshipment initiated, but tracking shows it hasn't been delivered yet</li>
+                            <li>Reshipment initiated outside the system with no proof of shipment (e.g., tracking number, item details) provided</li>
+                            <li>Reshipment initiated outside the system with no screenshot of user agreement provided</li>
+                            <li>Return shipping label number does not match</li>
+                            <li>The merchant's evidence is valid</li>
+                        </ul>
+                        
+                        <h4>Applicable to all reasons for merchant warehouse not refunding; there are identical images identified</h4>
+                        <ul>
+                            <li>There are identical images unrelated to the item/shipping label</li>
+                        </ul>
+                        
+                        <h4>Applicable to all reasons for merchant warehouse not refunding; the merchant is marked with a "high rejection rate" tag</h4>
+                        <ul>
+                            <li>No complete unboxing video provided</li>
+                        </ul>
+                        
+                        <h4>The reason for merchant warehouse not refunding is "Returned item does not match," and there is an SN code label.</h4>
+                        <ul>
+                            <li>Unable to verify the shipping label information/The label information is incorrect</li>
+                            <li>No proof showing the shipping label and SN code in the same image</li>
+                            <li>No complete return package unboxing video provided</li>
+                            <li>SN on the device in the return package unboxing video matches that on the proof of shipment</li>
+                        </ul>
+                        
+                        <h4>The reason for merchant warehouse not refunding is "Returned item does not match," and there is no SN code label.</h4>
+                        <ul>
+                            <li>User's after-sales reason is wrong item; merchant did not provide proof of shipment</li>
+                            <li>Return package or return package label not shown</li>
+                            <li>Can't tell the difference between the returned item and the ordered item</li>
+                        </ul>
+                        
+                        <h4>The reason for merchant warehouse not refunding is "Item not returned."</h4>
+                        <ul>
+                            <li>Return package's delivery address matches the historical/latest warehouse address</li>
+                            <li>Return package's delivery address is within 5 miles (8 km) of the merchant's address</li>
+                            <li>The delivery address has insufficient details and at least one of the following applies: 1) The merchant is tagged "high rejection rate", or 2) The user is in level C3–C5, not flagged by risk control, and the tracking does not show an address change by the user.</li>
+                        </ul>
+                        
+                        <h4>The reason for merchant warehouse not refunding is "Returned an empty package."</h4>
+                        <ul>
+                            <li>Return package or return package label not shown</li>
+                            <li>Return package is not empty</li>
+                        </ul>
+                        
+                        <h4>The reason for merchant warehouse not refunding is "Correct item has been sent."</h4>
+                        <ul>
+                            <li>Proof of shipment not provided</li>
+                            <li>Return package or return package label not shown</li>
+                            <li>There is a clear difference between the shipped item and the ordered item</li>
+                        </ul>
+                        
+                        <h4>The reason for merchant warehouse not refunding is "The returned item is damaged/missing."</h4>
+                        <ul>
+                            <li>Return package or return package label not shown</li>
+                            <li>No damage found on the item</li>
+                        </ul>
+                    `
+                },
+                {
+                    id: 'secondary-evidence',
+                    title: 'Secondary Evidence',
+                    icon: 'fa-file-alt',
+                    summary: 'Procedures for handling secondary evidence submissions from merchants.',
+                    content: `
+                        <h3>2.5 Update: secondary evidence record</h3>
+                        <p><strong>Background:</strong> Some merchants may have the right to submit secondary evidence. On top of the first submission, they can provide additional return quality inspection materials. Therefore, customer service should annotate the case by taking both rounds of evidence into account. The secondary evidence record is as follows:</p>
+                        
+                        <div class="note-box">
+                            <p><strong>Note:</strong> When reviewing secondary evidence, customer service must consider both the initial submission and the additional materials provided by the merchant.</p>
+                        </div>
+                    `
+                },
+                {
+                    id: 'image-display',
+                    title: 'Image Display',
+                    icon: 'fa-images',
+                    summary: 'Guidelines for displaying and comparing similar images.',
+                    content: `
+                        <h3>2.6 Modify the display style for same/similar images</h3>
+                        <p>Identified same/similar images will be displayed in a large view for better inspection and comparison.</p>
+                        
+                        <div class="note-box">
+                            <p><strong>Implementation:</strong> The system now automatically detects similar images and provides an enlarged view option for detailed examination.</p>
+                        </div>
+                    `
+                },
+                {
+                    id: 'customer-evidence',
+                    title: 'Customer Evidence',
+                    icon: 'fa-user-check',
+                    summary: 'Procedures for identifying and labeling abnormal customer behavior.',
+                    content: `
+                        <h3>2.7 Update: Annotation options — Customer evidence anomalies</h3>
+                        <p><strong>Background:</strong> Risk control requires data support to identify abnormal customer behavior. Therefore, customer service needs to label whether the merchant's feedback on such behavior is valid. The annotation options are "Yes, the customer's behavior is abnormal", "No, the customer's behavior is not abnormal", "Unable to determine"</p>
+                        
+                        <h4>Abnormal behaviors include:</h4>
+                        <table>
+                            <tr>
+                                <th>Abnormal behavior</th>
+                                <th>Definition</th>
+                            </tr>
+                            <tr>
+                                <td>Returned trash only</td>
+                                <td>The return package contains only low-value items such as sand, stones, or tissue bags; or contains only used daily consumables such as hair gel or vinegar.</td>
+                            </tr>
+                            <tr>
+                                <td>Returned old items for new purchase</td>
+                                <td>Returned items show significant differences in condition, with clear signs of long-term use.</td>
+                            </tr>
+                            <tr>
+                                <td>Returned inferior items as originals</td>
+                                <td>Returned items differ from the original shipment in brand or model, with a significant value gap.</td>
+                            </tr>
+                            <tr>
+                                <td>Returned an empty package</td>
+                                <td>The package is completely empty; any contents make this invalid.</td>
+                            </tr>
+                            <tr>
+                                <td>Tampered with shipping information</td>
+                                <td>The shipping label shows clear signs of tampering, or the logistics provider confirms the customer altered delivery information.</td>
+                            </tr>
+                            <tr>
+                                <td>Frequent or bulk returns</td>
+                                <td>A customer makes frequent purchases and returns in a short period; merchants may also report cases of malicious competition or reselling.</td>
+                            </tr>
+                            <tr>
+                                <td>Other</td>
+                                <td>Other scenarios the merchant considers abnormal.</td>
+                            </tr>
+                        </table>
+                        
+                        <div class="note-box">
+                            <p>You can assess the merchant's description to determine if the behavior involves returning trash, returning old for new, returning inferior items, sending back empty packages, tampering with shipping information, or excessive and frequent returns.</p>
+                        </div>
+                    `
+                },
+                {
+                    id: 'processing-time',
+                    title: 'Processing Time',
+                    icon: 'fa-clock',
+                    summary: 'Time requirements for processing annotation tickets.',
+                    content: `
+                        <h3>3. Processing time</h3>
+                        <p>All annotation tickets must be processed within 24 hours. There will be a reminder notification at the 12-hour mark and again at 24 hours.</p>
+                        
+                        <div class="note-box">
+                            <p><strong>Important:</strong> Timely processing is crucial to maintain service levels and ensure quick resolution for both merchants and customers.</p>
+                        </div>
+                        
+                        <h4>Processing Timeline</h4>
+                        <ul>
+                            <li><strong>0 hours:</strong> Ticket assigned to customer service representative</li>
+                            <li><strong>12 hours:</strong> First reminder notification sent</li>
+                            <li><strong>24 hours:</strong> Final reminder notification sent</li>
+                            <li><strong>24+ hours:</strong> Ticket escalated to supervisor</li>
+                        </ul>
+                    `
+                },
+                {
+                    id: 'annotation-page',
+                    title: 'Annotation Page',
+                    icon: 'fa-clipboard-list',
+                    summary: 'Step-by-step guide for processing annotations on the annotation page.',
+                    content: `
+                        <h3>4. Processing on the annotation page</h3>
+                        
+                        <h4>Steps</h4>
+                        <h5>How to use the annotation center</h5>
+                        
+                        <h4>Step 1</h4>
+                        <p>Based on the proof provided by the merchant/warehouse, label the return status of the items purchased in each sub-order at the after-sales order level.</p>
+                        <ol>
+                            <li>no item returned</li>
+                            <li>fully/partially returned</li>
+                        </ol>
+                        
+                        <p>- Confirm whether all the purchased items were returned based on user's appeal records, order information, the proof provided by the merchant/warehouse, and the merchant reviewed information.</p>
+                        <ul>
+                            <li>If there is no [merchant reviewed] information, make a normal judgment based on the user's appeal and merchant's evidence</li>
+                            <li>If there is [merchant reviewed] information, make a comprehensive judgment based on that</li>
+                        </ul>
+                        
+                        <div class="note-box">
+                            <p><strong>Example:</strong> The user requests a refund for 2 identical items, and the merchant provides evidence of receiving only 1 item and agrees to refund that item. There will still be 1 order remains unapproved for refund and will proceed to the second review. In this case, the merchant's evidence for the 1 item received is for the item that was agreed to be refunded, not the item under second review. Please make a comprehensive judgment based on the user's [request quantity] and [merchant reviewed] information to determine whether the item under second review has been returned.</p>
+                        </div>
+                        
+                        <p><strong>Note:</strong> If there are any merchant notes, please make sure to consider them when making a decision.</p>
+                        
+                        <p>- If the merchant provides chat records or other materials showing mutual agreement with the user, please proceed according to the agreed-upon solution.</p>
+                        
+                        <p>- If there was no item returned, click on the option [All items not received (returned items are not purchased items)], then there is no further confirmation of the return details</p>
+                        
+                        <p>- If the items were fully/partially returned, click on the option [Receive all/part of your purchase], then the return details will appear for you to confirm, leading to step 2.</p>
+                        
+                        <h4>Step 2</h4>
+                        <p>If the purchased items in sub-order are confirmed to be fully/partially returned, please further label the number of items affecting/not affecting secondary sales.</p>
+                        
+                        <p>- Refer to 5. Proof standards to determine the number of items affecting/not affecting secondary sales.</p>
+                        
+                        <div class="note-box">
+                            <p><strong>Please note:</strong> number of items affecting secondary sales + number of items not affecting secondary sales ≤ number of items requested for refund in sub-order</p>
+                        </div>
+                    `
+                },
+                // Proof Standards subcategories as main categories
+                {
+                    id: 'processing-procedure',
+                    title: 'Processing Procedure',
+                    icon: 'fa-cogs',
+                    summary: 'General processing procedures for all rejection reasons.',
+                    section: 'Proof Standards',
+                    content: `
+                        <h3>Processing Procedure</h3>
+                        <table>
+                            <tr>
+                                <th>Warehouse rejection reasons</th>
+                                <th>Characteristics</th>
+                                <th>Labeling items</th>
+                            </tr>
+                            <tr>
+                                <td>All items not received (or returned items are not the purchased items)</td>
+                                <td>- The customer has mailed the package, and tracking shows it has been delivered.<br>- The merchant's warehouse claims not to have received the package.</td>
+                                <td>Mark as "All items not received"</td>
+                            </tr>
+                            <tr>
+                                <td>Received all/part of the purchased items</td>
+                                <td>- The merchant has received the returned package from the user.<br>- The merchant indicates that the user returned an empty package/damaged goods/incorrect items, etc.</td>
+                                <td>Mark as "Received all/part of the purchased items"</td>
+                            </tr>
+                        </table>
+                        
+                        <h4>Step 1:</h4>
+                        <p>Based on the proof provided by the merchant/warehouse, label the return status of the items purchased in each sub-order at the after-sales order level.</p>
+                        
+                        <h4>All rejection reasons</h4>
+                        <ul>
+                            <li>The merchant has received the returned package from the user.</li>
+                            <li>The merchant indicates that the user returned an empty package/damaged goods/incorrect items, etc.</li>
+                        </ul>
+                        
+                        <div class="note-box">
+                            <p><strong>Special case:</strong> There may be instances where the user modifies label information, such as the tracking number. If UPS discovers incorrect information on the shipping label during transport, they may attach a small correction label. In this situation, it's necessary to verify the original label on the package, the small correction label, and the return label information in the system. If the original label information on the package is incorrect, the responsibility lies with the user.</p>
+                        </div>
+                                
+                        <div class="note-box">
+                            <p><strong>[Updated Aug 18, 2025]</strong> If the merchant reports that the entire item has been reshipped outside the system, provides the tracking information and proof of shipment showing the user has received it, then support the merchant.</p>
+                        </div>
+                                
+                        <h4>Outside-the-system reshipment:</h4>
+                        <p>It is decided after negotiation between the merchant and the consumer. In this case, there is no reshipment order information on the customer service Workbench. The merchant needs to provide evidence:</p>
+                        <ol>
+                            <li>Proof of shipment, and the logistics status shows that the user has signed for the item.</li>
+                            <li>Proof of agreement between the merchant and the user, such as chat screenshots, etc.</li>
+                        </ol>
+                        <p>Both must be provided. If the evidence is valid, then support the merchant.</p>
+                                
+                        <div class="note-box">
+                            <p><strong>Special case:</strong> If there is proof indicating [the returned package's size or weight is clearly inconsistent] that holds the same validity as an unboxing video, customer service may use basic common sense to make a judgment.</p>
+                        </div>
+                    `
+                },
+                {
+                    id: 'items-not-returned',
+                    title: 'Items Not Returned',
+                    icon: 'fa-box-open',
+                    summary: 'Procedures for handling cases where items are marked as not returned.',
+                    section: 'Proof Standards',
+                    content: `
+                        <h3>Items Not Returned</h3>
+                        <ul>
+                            <li>The customer has mailed the package, and tracking shows it has been delivered.</li>
+                            <li>The merchant's warehouse claims not to have received the package.</li>
+                        </ul>
+                        <p>If the following points are proven, please label it as "All items not received (or returned items are not the purchased items)":</p>
+                        <ul>
+                            <li>Incorrect return address leading to the warehouse not receiving the package (proof of package received at a non-warehouse address).
+                                <ul>
+                                    <li>e.g., If the package's delivery address doesn't match the warehouse city, it proves that the customer returned it to the wrong address.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                                
+                        <div class="note-box">
+                            <p><strong>[Updated on July 17, 2024]</strong> Background: Some online merchants prove that the delivery address is inconsistent, but in fact, it is found that the warehouse address has been modified by the merchant, causing the user's package to be sent to the previous warehouse address. What's updated in the workbench: Historical warehouse address & latest warehouse address will be shown in the after-sales order. You need to verify whether the delivery address of the returned package matches the historical and latest warehouse addresses shown in the Workbench. Please refer to the "Standard handling procedures" on the right for detailed steps.</p>
+                        </div>
+                                
+                        <div class="note-box">
+                            <p><strong>[Updated Sep 19, 2024]</strong> If the Temu return label is used but the tracking shows the delivery address was changed (e.g., "the delivery address has been updated"), it suggests the wrong return address was provided due to the user's actions. Support the merchant and mark the single package in question as "All items not received (or returned items are not the purchased items)".</p>
+                        </div>
+                                
+                        <div class="note-box">
+                            <p><strong>[Updated on Aug. 8, 2025]</strong> For some carriers, such as J&T Express, the delivery location (province/state/city) may not be identifiable in the signed logistics racking on the Workbench. Customer service may refer to 17track or the carrier's official website for the delivery address.</p>
+                        </div>
+                                
+                        <div class="note-box">
+                            <p><strong>[Updated on Sep. 1, 2025]</strong> If the evidence provided by the merchant (such as an email or statement from the carrier) confirms that the user tampered with the return information, and the tracking number in the evidence matches the return tracking number, with the carrier's official logo included, then the package is considered not returned to the warehouse. Mark the single package in question as "All items not received (or returned items are not the purchased items)".</p>
+                        </div>
+                                
+                        <h4>The following content CANNOT be used as valid evidence</h4>
+                        <ol>
+                            <li>Information from third-party platforms (e.g., proof from Amazon that their return warehouse didn't receive the package).</li>
+                            <li>Screenshots showing the warehouse query page can't find the package or the return tracking number information.</li>
+                            <li>The tracking number in the proof of delivery (POD) provided by the merchant does not match the return tracking number for this order.</li>
+                        </ol>
+                                
+                        <h4>Standard handling procedures:</h4>
+                        <h5>I. Annotation ticked has only one linked return package (single package)</h5>
+                        <ol>
+                            <li>If the merchant claims they haven't received the package, first check the delivery tracking for any rejection records:
+                                <ul>
+                                    <li>If a rejection is recorded, verify whether the rejection address exactly matches the merchant's historical or latest warehouse addresses.
+                                        <ul>
+                                            <li>If it matches, consider the package intentionally rejected by the merchant (thus already returned to the warehouse), and mark [Received all/part of the purchased item].</li>
+                                            <li>If it does not match (as shown in the picture below), proceed to the next step.</li>
+                                            <li>If there's no rejection record, or the rejection record lacks address information, proceed to the next step.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>Please check whether the country/state or province of the return delivery address matches the country/state or province of the merchant's historical warehouse address/latest warehouse address. There is no need to check at the city level.
+                                <ul>
+                                    <li>If they don't match, support the merchant, consider the package as not returned to the warehouse, and mark [All items not received].</li>
+                                    <li>If they match, proceed to the next step.</li>
+                                </ul>
+                            </li>
+                            <li>If the POD provided by the seller or the tracking information on the carrier's official website includes a detailed delivery address, check the distance between the package's delivery address and the seller's address using Google Maps. If the distance is less than 5 miles, support the user, and consider the package as returned to the warehouse. Mark the case as [Received all/part of the purchased item].</li>
+                            <li>If the POD provided by the seller or the tracking information on the carrier's official website shows no detailed address and only includes regional information:
+                                <ol>
+                                    <li>Check if the merchant is tagged "Merchants with high rejection rate". If yes, consider the package as returned to the warehouse, and mark the case as [Received all/part of the purchased item]. If no, proceed to step 2).</li>
+                                    <li>The user is C3-C5 not flagged for risk control, and there are records of sender-side address changes in the tracking, support the user, consider the package as returned to the warehouse, and mark the case as [Received all/part of the purchased item].</li>
+                                </ol>
+                            </li>
+                        </ol>
+                                
+                        <div class="note-box">
+                            <p><strong>Note:</strong> In some cases, carriers may correct or adjust the city name, which can result in the recorded delivery city being different from the warehouse city, even though the package has in fact been delivered to the correct location. When the delivery address provided is approximate or not fully detailed, customer service agents only need to verify whether the country and state/province match. There is no need to compare the city information.</p>
+                        </div>
+                                
+                        <p>After labeling it as [received all/part of the purchased goods], please follow Step 2 to determine whether the goods are damaged and can be sold again. (In this scenario, there are generally no supporting documents for the conditions of the returned goods, so it can be labeled as [number of items not affecting resale].</p>
+                                
+                        <h5>I. Annotation ticked has multiple linked return packages</h5>
+                        <p>Use the list of return tracking numbers to determine if multiple packages are involved. In cases with multiple packages, check whether each package has been received by the warehouse and mark the case based on how many received items affect resale:</p>
+                        <p>Examples:</p>
+                        <ol>
+                            <li>If 5 packages were supposed to be returned and none were received, mark "All items not received (or returned items are not the purchased items)".</li>
+                            <li>If 5 packages were supposed to be returned and 4 were received while 1 was not, mark "Received all/part of the purchased item".
+                                <ul>
+                                    <li>For the 4 received packages, indicate how many items affect resale and how many do not.</li>
+                                    <li>There's no need to mark the unreturned package for resale impact.</li>
+                                </ul>
+                            </li>
+                        </ol>
+                        <p>When a large item is returned in multiple packages and the merchant has only received some of them, the handling rules are as follows:</p>
+                        <ul>
+                            <li>The merchant must provide photos or videos of the received packages. You then use this evidence to determine whether the contents will affect the resale of the item (e.g., if a package contains only part of the expected components).</li>
+                            <li>If the merchant fails to provide evidence or the evidence is invalid, making it impossible to determine whether the received package contains the complete item or only partial components, the item should be marked as not affecting resale.</li>
+                        </ul>
+                    `
+                },
+                {
+                    id: 'return-empty-package',
+                    title: 'Return Empty Package',
+                    icon: 'fa-box',
+                    summary: 'Procedures for handling cases where returned packages are empty.',
+                    section: 'Proof Standards',
+                    content: `
+                        <h3>Return Empty Package</h3>
+                        <h5>Characteristics:</h5>
+                        <ul>
+                            <li>The merchant's warehouse has received the return package.</li>
+                            <li>Photo/video evidence shows that the package did not contain the actual product:
+                                <ul>
+                                    <li>The package was completely empty;</li>
+                                    <li>The package only contained an empty product box;</li>
+                                    <li>The package only contained sand, tissues, or other low-value fillers.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                                
+                        <div class="note-box">
+                            <p><strong>[Sep. 3, 2025 Update]</strong> Standard Handling Procedure: If the following two points can be proven, mark as [All items not received (or returned items are not the purchased items)]:</p>
+                            <ol>
+                                <li>The package tracking number / order ID on the return label photo matches the return details in the Workbench, proving that the package was indeed sent by the customer.
+                                    <ul>
+                                        <li>For returns to self-operated warehouses, this requirement can be relaxed. It is not mandatory for the warehouse inspection video/photo to display the logistics tracking number on the package.</li>
+                                    </ul>
+                                </li>
+                                <li>Photo/video evidence of the return package proves that the actual product was not inside the package.
+                                    <ul>
+                                        <li>For example: the package was completely empty; the package only contained an empty product box; the package only contained sand, tissues, or other low-value fillers.</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </div>
+                                
+                        <h5>Special Case:</h5>
+                        <p>When the customer states in their after-sales request that the received package contained only an empty product box, and therefore only returned the empty product box:</p>
+                        <ol>
+                            <li>First determine whether the customer has provided video/photo evidence of receiving an empty product box. If provided, proceed to the next step. If not provided, please handle according to the standard procedure.</li>
+                            <li>In addition to the return label photo and return package photo/video, if the merchant can provide shipping proof showing that the product was shipped normally (shipping proof requirements below), then mark as [All items not received (or returned items are not the purchased items)]. Otherwise, mark as [Received all/part of the purchased item].</li>
+                        </ol>
+                        <p>Merchant's shipping proof only needs to meet one of the following conditions:</p>
+                        <ol>
+                            <li>Shipping video/shipping photo showing the tracking number, and that the shipped product was not an empty product box.</li>
+                            <li>Shipping list, which must include product information, along with either the shipping tracking number or the Order ID. (See image 1)</li>
+                            <li>Shipping proof/logistics official website/shipping label showing the tracking number and the package weight ≥ 80% of the estimated package weight. (See image 2)</li>
+                        </ol>
+                        <p>If unproven, please label it as "Received all/part of the purchased items".</p>
+                                
+                        <div class="note-box">
+                            <p><strong>[updated on July 9]</strong> Merchant supporting documents & package weight as shown on carrier website. Background: The package weight shown on some carriers' (e.g., UPS) websites is exactly the same as the estimated weight shown on the return label provided by merchants. These packages were not actually weighted when they were shipped. Hence below rules are introduced.</p>
+                            <p>If the merchant uses screenshots of the weight of the return package on the official carrier website and shows that the weight is exactly the same as the weight predicted by the merchant on the workbench, the proof will be deemed invalid and the label should be "Received all/part of the purchased goods"</p>
+                            <p>Example (1700g = 3.8LBS)</p>
+                        </div>
+                                
+                        <p>After labeling it as [received all/part of the purchased goods], please follow Step 2 to determine whether the goods are damaged and can be sold again.</p>
+                    `
+                },
+                {
+                    id: 'returned-item-does-not-match',
+                    title: 'Returned Item Does Not Match',
+                    icon: 'fa-exchange-alt',
+                    summary: 'Procedures for handling cases where returned items do not match the original order.',
+                    section: 'Proof Standards',
+                    content: `
+                        <h3>Returned Item Does Not Match</h3>
+                        <ul>
+                            <li>The merchant's warehouse has received the return package.</li>
+                            <li>The returned item doesn't match the ordered item's type/model.</li>
+                        </ul>
+                        <p>If the following points are proven, please label it as "All items not received (or returned items are not the purchased items)":</p>
+                        <ul>
+                            <li>The signed package is indeed sent by the user (the package tracking number / order ID on the return label photo matches the return details in the Workbench; return package photos).
+                                <ul>
+                                    <li>Note: If it is returned to a self-operated warehouse, this standard can be relaxed appropriately, and it is not mandatory for the quality inspection video/photo of the self-operated warehouse to show the package's logistics label.</li>
+                                </ul>
+                            </li>
+                            <li>The item or item model doesn't match the order (return item photos).
+                                <ul>
+                                    <li>If the returned item's appearance doesn't match the product details, it can be judged that the returned item doesn't match the ordered item.</li>
+                                    <li>For digital devices like 3C products and iPhones, if the merchant can prove that the SN or IMEI code of the returned item does not match the one shipped, the case may be marked as "All items not received (or returned items are not the purchased items)".</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <p>Required evidence (the merchant needs to provide both the shipment and return evidence):</p>
+                        <ol>
+                            <li>Shipment evidence: Photos or videos of shipment, or a seller note on the order page showing the item's SN or IMEI code. If there are multiple seller notes, the one recorded closest to but before the shipment time will be considered valid.</li>
+                            <li>Return evidence: Photos or videos of the returned item clearly showing its SN or IMEI code, proving that it differs from the one on the shipped item.</li>
+                        </ol>
+                        <p>If unproven, please label it as "Received all/part of the purchased items".</p>
+                                
+                        <p>After labeling it as [received all/part of the purchased goods], please follow Step 2 to determine whether the goods are damaged and can be sold again.</p>
+                                
+                        <p>If the customer requests for wrong item after-sales, the annotation item may not match the item evidenced by the warehouse.</p>
+                        <ul>
+                            <li>In this scenario, if the reason for non-refund from the merchant's warehouse is [mismatch of returned items], please judge whether all the purchased items have been received by combining the customer's after-sale request/appeal record and the warehouse's evidence:</li>
+                        </ul>
+                        <p>Step1.1 Check the customer's request record to determine whether the returned items are consistent with the wrong items described in the customer's after-sale request/appeal record:</p>
+                        <p>If it is not consistent, then mark [All items have not been received (or none of the returned items are the purchased items)].</p>
+                        <p>Step1.2 If the item returned by the customer is the same as the item described in the customer's after-sales request/appeal record, check whether the warehouse has any proof that no wrong items have been shipped (any one of the following is acceptable):</p>
+                        <ul>
+                            <li>Merchant's shipping video: Must clearly show the items inside the package and the tracking number to confirm the package's identity.</li>
+                            <li>Shipping photo and shipping label photo: The shipping photo must clearly show the items inside the package, and the tracking number on the label must match the tracking number in the order.</li>
+                            <li>Shipping list: For example, a screenshot of a third-party platform's shipping details page, including the product name(s) and tracking details.</li>
+                        </ul>
+                        <p>If the warehouse can provide any of the above evidence that the correct item was shipped, label the case as [All items not received (or returned items are not the purchased items)].</p>
+                        <p>Step1.2 If the item returned by the customer is the same as the item described in the customer's after-sales request/appeal record, check whether the warehouse has any evidence of not sending the wrong item.</p>
+                        <ul>
+                            <li>Merchant's shipping video: Must clearly show the items inside the package and the tracking number to confirm the package's identity.</li>
+                            <li>Shipping photo and shipping label photo: The shipping photo must clearly show the items inside the package, and the tracking number on the label must match the tracking number in the order.</li>
+                            <li>Shipping list: For example, a screenshot of a third-party platform's shipping details page, including the product name(s) and tracking details.</li>
+                        </ul>
+                        <p>If the warehouse cannot provide any of the above evidence, or the provided evidence is invalid, label the case as [Received all/part of the purchased item].</p>
+                                
+                        <p>After labeling it as [received all/part of the purchased goods], please follow Step 2 to determine whether the goods are damaged and can be sold again.</p>
+                    `
+                },
+                {
+                    id: 'correct-item-sent',
+                    title: 'Correct Item Sent',
+                    icon: 'fa-check-circle',
+                    summary: 'Procedures for handling cases where the correct item was sent but customer claims otherwise.',
+                    section: 'Proof Standards',
+                    content: `
+                        <h3>The Correct Item Has Been Sent (only exists in the wrong item tag)</h3>
+                        <p>Exceptional circumstances: If the merchant's reason for rejection is [correct item was sent], it is possible that the merchant did not make a mistake, and the user placed the wrong order and mistakenly thought the wrong item was sent. Please make a comprehensive judgment based on the notes and the PO order details below.</p>
+                        <ul>
+                            <li>The merchant warehouse has received the user's return package.</li>
+                            <li>The returned item does not match the item type/model of the order.</li>
+                        </ul>
+                        <p>If the customer requests for wrong item after-sales, the annotation item may not match the item evidenced by the warehouse.</p>
+                        <p>Check if the warehouse has evidence that the correct items were sent (any one of the following is acceptable):</p>
+                        <ul>
+                            <li>Merchant's shipping video: Must clearly show the items inside the package and the tracking number to confirm the package's identity.</li>
+                            <li>Shipping photo and shipping label photo: The shipping photo must clearly show the items inside the package, and the tracking number on the label must match the tracking number in the order.</li>
+                            <li>Shipping list: For example, a screenshot of a third-party platform's shipping details page, including the product name(s) and tracking details.</li>
+                        </ul>
+                        <p>If the warehouse can provide any of the above evidence that the correct item was shipped, label the case as [All items not received (or returned items are not the purchased items)].</p>
+                                
+                        <p>If the warehouse has evidence that the correct items were sent (such as a video/screenshot of the packaging), and the evidence can prove that the items sent by the merchant are the same as those purchased by the user:</p>
+                        <ul>
+                            <li>The package sent is indeed the package of the user's complaint order (return package label; return package photo;)
+                                <ul>
+                                    <li>Note: If it is returned to a self-operated warehouse, this standard can be relaxed appropriately, and it is not mandatory for the quality inspection video/photo of the self-operated warehouse to show the package's logistics label.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <p>Step 1.2 If the item returned by the customer is the same as the item described in the customer's after-sales request/appeal record, check whether the warehouse has any evidence that the correct item was sent.</p>
+                        <ul>
+                            <li>Merchant's shipping video: Must clearly show the items inside the package and the tracking number to confirm the package's identity.</li>
+                            <li>Shipping photo and shipping label photo: The shipping photo must clearly show the items inside the package, and the tracking number on the label must match the tracking number in the order.</li>
+                            <li>Shipping list: For example, a screenshot of a third-party platform's shipping details page, including the product name(s) and tracking details.</li>
+                        </ul>
+                        <p>If the warehouse cannot provide any of the above evidence, or the provided evidence is invalid, label the case as [Received all/part of the purchased item].</p>
+                                
+                        <p>After marking [Received all/part of the purchased items], please further determine whether the items are damaged and affect resale according to Step 2.</p>
+                    `
+                },
+                {
+                    id: 'self-returns',
+                    title: 'Self-Returns',
+                    icon: 'fa-undo',
+                    summary: 'Procedures for handling self-return cases.',
+                    section: 'Proof Standards',
+                    content: `
+                        <h3>For self-returns, the merchant rejects the return for any of the following reasons:</h3>
+                        <ul>
+                            <li>Duplicate tracking number</li>
+                            <li>Package not sent out</li>
+                            <li>Transportation/tracking interrupted</li>
+                            <li>Delivered at a different location</li>
+                        </ul>
+                        <p>The package is returned via self-return. Please refer to KB "Return and refund by self-return - Logistics exception" to determine whether to support the merchant.</p>
+                        <p>Single-package self-return:</p>
+                        <ul>
+                            <li>If to support the merchant (i.e., the package was not returned), mark as "All items not received (or returned items are not the purchased items)".</li>
+                            <li>If to reject the merchant (i.e., the package was returned to the warehouse), mark as "Received all/part of the purchased item", noting that the items do not affect resale.</li>
+                        </ul>
+                        <p>Multiple-package self-return:</p>
+                        <p>You must verify whether each package has been received by the warehouse and annotate the case according to whether or how many of the items affect resale.</p>
+                        <p>Examples:</p>
+                        <ol>
+                            <li>5 packages expected, none returned → mark "All items not received (or returned items are not the purchased items)".</li>
+                            <li>5 packages expected, 4 returned and 1 not returned → mark "Received all/part of the purchased item", with the quantity of items affecting or not affecting resale based on the 4 returned packages. No need to mark the unreturned package for resale impact.</li>
+                        </ol>
+                        <p>Large items split into multiple packages:</p>
+                        <p>If the merchant only received some of the packages:</p>
+                        <ul>
+                            <li>They must provide photos or videos of received packages. You then use the evidence to assess whether the received items affect resale (e.g., only part of the product components were returned).</li>
+                            <li>If the merchant does not provide evidence, or the evidence is invalid and it's unclear whether the package contains the full item or only parts, mark the item as not affecting resale.</li>
+                        </ul>
+                    `
+                },
+                {
+                    id: 'returned-item-damaged',
+                    title: 'Returned Item Damaged',
+                    icon: 'fa-tools',
+                    summary: 'Procedures for handling cases where returned items are damaged.',
+                    section: 'Proof Standards',
+                    content: `
+                        <h3>Returned Item Damaged/ Other reasons for rejection (results labeled as received all/part of the purchased goods in Step 1)</h3>
+                        <p>In cases where the merchant provides evidence that the returned item is defective or missing parts, customer service must also review the evidence submitted by the user.</p>
+                                
+                        <h5>Customer Service Review Process for User Evidence:</h5>
+                        <p>Please review the images or videos in the user's after-sales request or chat history to determine whether the item was damaged or had quality issues upon delivery.</p>
+                        <p>Note: When an agent submits a return on behalf of the user, images may not be uploaded, but the user may have already provided them in the chat history. Please check the chat records.</p>
+                        <ol>
+                            <li>If the user provides no evidence, or evidence unrelated to the after-sales item, then rely on the merchant's evidence to determine whether the product affects resale.</li>
+                            <li>If the user provides evidence showing the item was damaged or missing parts upon delivery, support the user (if not C1 and cleared by risk control) regardless of whether their evidence exactly matches the merchant's, and mark as [Number of items not affecting resale]. Otherwise, determine whether the item affects resale based on the merchant's evidence.</li>
+                            <li>If the user's photos/videos show no obvious damage or missing parts, but the merchant's evidence does:
+                                <ol>
+                                    <li>If the user provides a packing video recorded before sending the return, proving the item was intact at the time of return, support the user and mark as [Number of items not affecting resale].</li>
+                                    <li>If the user provides non-packing video evidence but the merchant provides a complete unboxing video, rely on the merchant's evidence to decide whether the product affects resale.</li>
+                                    <li>If both sides provide other types of videos or only photos:
+                                        <ol>
+                                            <li>For single items priced under 150 USD, if the user passes risk control and is not categorized as C1, support the user and mark as [Number of items not affecting resale]. Otherwise, rely on the merchant's evidence to judge resale impact.</li>
+                                            <li>For single items priced at or above 150 USD, if the user passes risk control and is categorized as C3–C5, support the user and mark as [Number of items not affecting resale]. Otherwise, rely on the merchant's evidence to determine resale impact.</li>
+                                        </ol>
+                                    </li>
+                                </ol>
+                            </li>
+                        </ol>
+                        <ul>
+                            <li>The merchant's warehouse has received the return package.</li>
+                            <li>The item is damaged, or missing major accessories, affecting secondary sales.</li>
+                        </ul>
+                                
+                        <h5>Labeling items</h5>
+                        <ul>
+                            <li>Number of items affecting resale</li>
+                            <li>Number of items not affecting resale</li>
+                        </ul>
+                        <p>If the following points are proven, please label it as "Number of items affecting resale":</p>
+                        <ul>
+                            <li>The signed package is indeed sent by the user (the package tracking number / order ID on the return label photo matches the return details in the Workbench; return package photos).
+                                <ul>
+                                    <li>Note: If it is returned to a Temu-managed warehouse, this standard can be relaxed appropriately, and it is not mandatory for the quality inspection video/photo of the Temu-managed warehouse to show the package's logistics label.</li>
+                                </ul>
+                            </li>
+                            <li>The item is indeed damaged (detailed photos/videos of the returned item).
+                                <ul>
+                                    <li>e.g., Clear usage marks on the item, such as a rusted pot.</li>
+                                    <li>The damaged item is part of the order (overall photos of the returned item).</li>
+                                    <li>Note: The tracking number in the image below has been obscured for privacy protection. For actual evidence submission, the full shipping label must be visible.</li>
+                                    <li>For tires, the following conditions may affect their resale:
+                                        <ul>
+                                            <li>Tread edges are dulled or the vent spews are worn. (If only the vent spews are missing the tread itself remains intact, resale is not affected.)</li>
+                                            <li>Stubborn dirt, asphalt, oil, or other hard-to-remove stains.</li>
+                                            <li>Obvious signs of use on the rim or tread, including scratches, cuts, deformities due to pressure, or installation marks.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <p>If proof doesn't show the returned item is damaged, please label it as "Number of items not affecting resale".</p>
+                        <p>Note: Normal unboxing as a common step in online shopping does not count as damage. These should be labeled as "Number of items not affecting resale". Examples:</p>
+                        <ul>
+                            <li>Outer packaging (such as cartons or plastic bags) has tears or scratches.</li>
+                            <li>Soles of shoes show slight dust.</li>
+                            <li>Clothes have creases from packaging or shipping.</li>
+                            <li>Accessories like screws or wheels show minor installation or trial-use marks.</li>
+                            <li>Wipeable stains, such as light dust, surface dirt, fibers, or hair.</li>
+                        </ul>
+                    `
+                },
+                {
+                    id: 'image-annotation-rules',
+                    title: 'Image Annotation Rules',
+                    icon: 'fa-image',
+                    summary: 'Guidelines for annotating images in the review process.',
+                    section: 'Proof Standards',
+                    content: `
+                        <h3>Image Annotation Rules</h3>
+                        <p>Local merchant - Warehouse quality inspection of consumer returns - Customer Service Second Review: New Label Added"The merchant's evidence is valid and the pictures displayed to consumers are marked"</p>
+                        <p>When the annotation result supports the merchant's rejection, image annotation labels are newly added</p>
+                        <ol>
+                            <li>Annotate [None of the items were received (or returned items are not the purchased ones)]</li>
+                            <li>Annotate [Received all/part of the purchased items] and the number of items affecting resale > 0</li>
+                        </ol>
+                        <p>Annotation options:</p>
+                        <ul>
+                            <li>Valid, suitable for customer display = Evidence images supporting rejection that meet compliance standards.</li>
+                            <li>Valid, not suitable for consumer display = Evidence images supporting rejection but restricted by compliance.</li>
+                            <li>Invalid = Evidence images that cannot support rejection.</li>
+                        </ul>
+                        <p>High-frequency evidence types: Package shipping label, Logistics tracking website, Product photos, Outer packaging photos</p>
+                                
+                        <h5>Review criteria:</h5>
+                        <p><strong>Definition of valid evidence:</strong> From the perspective of review rules, images that can support the merchant's rejection.</p>
+                        <p><strong>Standards for images not suitable for customer display:</strong></p>
+                        <ol>
+                            <li>Features that can identify a person, such as faces or tattoos, or images containing staff information (ID cards, badges, etc.)</li>
+                            <li>Backend screenshots from Temu.</li>
+                            <li>Screenshots in Chinese.</li>
+                            <li>Logistics website screenshots.</li>
+                            <li>Images containing shipping labels or barcodes that do not belong to the returned package or item(s).</li>
+                            <li>Images from merchants with high rejection rate tags.</li>
+                            <li>Images with similar image tags.</li>
+                            <li>Screenshots related to the user's chat with the merchant/customer service.</li>
+                            <li>Images containing the user's address.</li>
+                        </ol>
+                        <p><strong>Invalid evidence:</strong> From the perspective of review rules, images that cannot support the merchant's rejection, such as merchant item sample images or merchant warehouse query pages.</p>
+                    `
+                },
+                {
+                    id: 'used-products',
+                    title: 'Used Products',
+                    icon: 'fa-recycle',
+                    summary: 'Special rules for handling returns of used products.',
+                    section: 'Proof Standards',
+                    hasSubcategories: true,
+                    subcategories: [
+                        {
+                            id: 'used-books',
+                            title: 'Used Books',
+                            icon: 'fa-book',
+                            summary: 'Specific guidelines for used book returns.',
+                            content: `
+                                <h3>Used Books</h3>
+                                <table>
+                                    <tr>
+                                        <th>Annotation</th>
+                                        <th>Evidence that the merchant needs to provide</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Step 2<br>If all/part of the items purchased in the order ID are returned, further annotate the quantities of items received by the warehouse that affect/do not affect secondary sales.<br>Quantities of items that affect secondary sales<br>Refund rate for N items affecting secondary sales (compared to actual photos in product details page)</td>
+                                        <td>If the following can be proved，all can be annotated as [Number of items affecting resale]<br>- Book integrity:<br>  - Missing pages, damage, stains, writing, tearing, and other conditions that affect reading.<br>  - Attachments are missing (such as CDs, bookmarks, etc.).<br>- Book Condition:<br>  - The cover, back cover, spine, etc. have obvious creases, damage, or stains.<br>  - The inner pages are severely yellowed, moldy, and have been eaten by insects.</td>
+                                    </tr>
+                                </table>
+                                
+                                <div class="note-box">
+                                    <p><strong>Note：</strong></p>
+                                    <ol>
+                                        <li>The merchant rejected the return because the returned item was damaged. Please confirm whether the user's reason for requesting after-sales service is [quality issues/product defects] or [missing items/accessories]. If this is the case, it means the product may have been damaged/defective or missing items/accessories when the user received it. If this situation applies, CS must check the chat record to verify if the product issues reported by the merchant match the original product issues described in the details. If they do, annotate [Number of items affecting resale].</li>
+                                    </ol>
+                                </div>
+                                
+                                <table>
+                                    <tr>
+                                        <th>Damaged, torn, or stained cover/back cover</th>
+                                        <td>95%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>At the time of shipment:<br>- Photos or videos of the item showing its condition. If the product detail page already includes real photos of the item, those can serve as substitutes.<br>- Shipping tracking label.<br>At the time of return:<br>- A clear photo of the return shipping label.<br>- Videos (not necessarily showing the full unboxing process) or photos of the returned item showing visible product damage.</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <th>The spine of the book is broken and severely deformed.</th>
+                                        <td>80%</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Missing pages, damage, stains, writing, or tearing in the interior pages</th>
+                                        <td>75%</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Attachment (CD/DVD/bookmark) missing</th>
+                                        <td>90%</td>
+                                    </tr>
+                                    <tr>
+                                        <th>The binding is loose, with pages falling out or scattered.</th>
+                                        <td>75%</td>
+                                    </tr>
+                                </table>
+                                
+                                <div class="note-box">
+                                    <p><strong>Note：</strong></p>
+                                    <ol>
+                                        <li>The refund calculation logic for multiple items is as follows: since the current labeling center only supports integer refund amounts, please use rounding logic to calculate the final amount.<br>Ex：<br>The user purchased 2 books, one of which had a broken spine and the other had a damaged cover/back cover. The refund rate for the two items that ultimately affected the resale is annotated as 88% [(80%+95%)/2=87.5%]</li>
+                                        <li>If multiple scenarios occur, percentages can be calculated cumulatively.</li>
+                                    </ol>
+                                </div>
+                            `
+                        },
+                        {
+                            id: 'used-3c-electronics',
+                            title: 'Used 3C Electronics',
+                            icon: 'fa-laptop',
+                            summary: 'Specific guidelines for used 3C electronic product returns.',
+                            content: `
+                                <h3>Used 3C Electronic Products</h3>
+                                <table>
+                                    <tr>
+                                        <th>Annotation</th>
+                                        <th>Evidence that the merchant needs to provide</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Step 2<br>If all/part of the items purchased in the order ID are returned, further annotate the quantities of items received by the warehouse that affect/do not affect secondary sales.<br>Quantities of items that affect secondary sales<br>Refund rate for N items affecting secondary sales (compared to actual photos in product details page)<br><br>Like New：<br>Very Good：<br>Good：<br>Acceptable：</td>
+                                        <td>If the following can be proved，all can be annotated as [Number of items affecting resale]<br>- Product Appearance:<br>  - There is extensive damage, deformation, or a broken screen.<br>- Accessories:<br>  - Important accessories are missing, such as the power adapter, remote control, etc.</td>
+                                    </tr>
+                                </table>
+                                
+                                <div class="note-box">
+                                    <p><strong>Note：</strong></p>
+                                    <ol>
+                                        <li>If the merchant rejects the return because the item is damaged, please confirm whether the user's reason for requesting after-sales service is [quality issue/product defect] or [missing items/accessories] If this is the case, it means the product may have been damaged/defective or missing items/accessories when the user received it. If this situation applies, CS must check the chat record to verify if the product issues reported by the merchant match the original product issues described in the details. If they do, annotate [Number of items affecting resale].</li>
+                                    </ol>
+                                </div>
+                                
+                                <table>
+                                    <tr>
+                                        <th>Extensive damage, deformation, and a broken screen occurred.</th>
+                                        <td>70<br>70<br>80<br>80</td>
+                                    </tr>
+                                    <tr>
+                                        <td>At the time of shipment:<br>- Photos or videos of the item showing its condition. If the product detail page already includes real photos of the item, those can serve as substitutes.<br>- Shipping tracking label.<br>At the time of return:<br>- A clear photo of the return shipping label.<br>- Videos (not necessarily showing the full unboxing process) or photos of the returned item showing visible product damage.</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Missing important accessories such as power adapter, remote control, charging cable, headphones, etc. (up to $20)</th>
+                                        <td>80<br>80<br>80<br>80</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Only accessories were returned, while the main item is missing.<br>Examples:<br>1. The user purchased a phone but returned only the charger without the phone itself.<br>2. The user purchased a smartwatch but returned only the strap without the watch.</th>
+                                        <td>20<br>20<br>20<br>20</td>
+                                    </tr>
+                                </table>
+                                
+                                <div class="note-box">
+                                    <p><strong>Note：</strong> If the merchant provides evidence that the computer/combo machine is missing a graphics card, monitor, etc., please process the claim as a damaged item</p>
+                                </div>
+                                
+                                <p><strong>Calculation logic:</strong></p>
+                                <ol>
+                                    <li>The calculation logic for refunds of multiple items is as follows: since the current labeling center only supports integer refund amounts, please use rounding logic to calculate the final amount.<br>Example:<br>A user buys 2 second-hand 3C items, one Like New item with a cracked screen, and one Good item with a missing charger.<br>The refund percentage for the 2 items that affect the resale is then annotated as 75% [(70%+80%)/2=75%]</li>
+                                    <li>If multiple situations occur, the percentages can be combined</li>
+                                </ol>
+                            `
+                        },
+                        {
+                            id: 'used-iphone',
+                            title: 'Used iPhone',
+                            icon: 'fa-mobile-alt',
+                            summary: 'Specific guidelines for used iPhone returns.',
+                            content: `
+                                <h3>Used iPhone</h3>
+                                <table>
+                                    <tr>
+                                        <th>Refund ratio for N items that affect Resale (based on comparison with product detail real photos)</th>
+                                        <th>Materials required from the merchant as evidence</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Step 2<br>If it is confirmed that the items in the sub-order were fully or partially returned, further indicate the number of items received by the warehouse that affect / do not affect resale<br><br>Notes:<br>If the merchant reports that the returned item has damage, scratches, or other appearance issues affecting resale, please check the product photos in the product details or the shipping photos/videos provided by the merchant.<br>- If the returned item's condition matches the product photos or the merchant's shipping photos/videos, the customer is not responsible, and resale will not be affected.<br>- If there are no product photos in the product details and the merchant has not provided shipping photos/videos, making it impossible to verify the item's condition at shipment, the customer is also not responsible, and resale will not be affected.<br>- If the returned item's condition differs from the product photos or the merchant's shipping photos/videos, continue assessing whether it affects resale.<br>Like New：<br>Very Good：<br>Good：<br>Acceptable：</td>
+                                        <td>Deductions where resale will be affected<br>The device has visible signs of use, with large-area damage, scratches, or a broken screen<br>70%<br>70%<br>80%<br>80%<br>At the time of shipment:<br>- Photos or videos of the item showing its condition. If the product detail page already includes real photos of the item, those can serve as substitutes.<br>- Shipping tracking label.<br>- If the merchant needs to provide evidence of the original order's SN or IMEI code, it can be submitted either through shipping photos or videos, or via the seller note on the order page. If multiple seller notes exist, the one recorded closest to but before the shipment time will be considered the valid SN or IMEI code.<br>At the time of return:<br>- A clear photo of the return shipping label.<br>- Videos (not necessarily showing the full unboxing process) or photos of the returned item showing visible product damage.<br>iCloud account not signed out / phone cannot be unlocked (e.g., with a screen passcode), making it impossible to resell<br>0%<br>The phone does not function properly due to damaged components or was returned after disassembly<br>20%<br>Returned without a data cable or in non-original packaging<br>Note: If the merchant claims the item was returned in non-original packaging, but the returned packaging matches the packaging shown in the product detail images/evidence of shipment, or the merchant did not upload packaging information, this deduction should be waived.<br>95%<br>The returned phone's SN/IMEI code does not match the original order (not the original device)<br>0%</td>
+                                    </tr>
+                                </table>
+                                
+                                <div class="note-box">
+                                    <p><strong>Note:</strong> Used phones or 3C products may also involve SN code issues. Please refer to the review standards below for details.</p>
+                                </div>
+                            `
+                        }
+                    ]
+                },
+                {
+                    id: 'high-value-electronics',
+                    title: 'High-Value Electronics (SN Code)',
+                    icon: 'fa-microchip',
+                    summary: 'Special rules for high-value electronics with serial numbers.',
+                    section: 'Proof Standards',
+                    content: `
+                        <h3>Rules for Annotating [high-value electronic consumer goods (with sn code)]</h3>
+                        <p><strong>Background:</strong> Currently, there are bad cases where users return High-value Items with mismatched SN/IMEI codes. In response to this situation, the review standards for items with an SN/IMEI code need to be refined. (How to determine if it is an SN code product? - > There is an "SN code product" label under the item name.)</p>
+                                
+                        <h5>Merchant Evidence Requirements:</h5>
+                        <p>Merchants must provide both types of evidence materials for shipment and return (both are indispensable):</p>
+                        <p>The merchant's reason for rejection is: The returned product does not match! (Other rejection reasons will be handled as usual)</p>
+                        <p>Both the proof of shipping and return need to be provided simultaneously</p>
+                        <table>
+                            <tr>
+                                <th>Requirements for supporting documents</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p><strong>Proof of shipping</strong><br>Proof of shipping is accepted if any one of the following conditions is met：</p>
+                                    <ol>
+                                        <li>The shipping outer packaging information: The shipping label and SN code must be clearly visible at the same time.</li>
+                                        <li>The return outer packaging information: The shipping label and SN/IMEI code must be clearly seen at the same time.</li>
+                                        <li>The seller note on the order page must clearly show the SN or IMEI code of the shipped item. If multiple seller notes are available, the one recorded closest to but before the shipment time will be considered the valid SN or IMEI code.</li>
+                                    </ol>
+                                    <p><strong>Proof of return</strong><br>Proof of return must meet the following conditions simultaneously:</p>
+                                    <ol>
+                                        <li>Returned outer packaging information: The return shipping label must be clearly visible.</li>
+                                        <li>A complete video of the device being taken out of the package, and the device's SN/IMEI code can be clearly seen.</li>
+                                    </ol>
+                                </td>
+                            </tr>
+                        </table>
+                                
+                        <h5>Review requirements for customer service:</h5>
+                        <ol>
+                            <li>When the user returns the item in a non-original packaging box/returns the product in the original packaging box but the shipping label information and SN/IMEI code cannot be verified:
+                                <p>If the following four points can be proved, annotate as follows: [All items have not been received (or none of the returned items are the purchased items)], otherwise annotate as [Received all/part of the purchased items]</p>
+                                <ol>
+                                    <li>The shipping package tracking number and the PO details match.</li>
+                                    <li>The shipping tracking number and the SN code are displayed on the same page, or the merchant has provided the SN/IMEI code on the order page.</li>
+                                    <li>The return package tracking number and the PO details match.</li>
+                                    <li>In the complete video of the device being taken out of the return package, the SN/IMEI code on the device can be seen, but does not match the SN/IMEI code of the item originally shipped.</li>
+                                </ol>
+                            </li>
+                            <li>When the user returns the item in the original packaging, and all the shipping information is retained (the shipping label, SN code, etc):
+                                <p>If the following four points can be proved, annotate as follows: [All items have not been received (or none of the returned items are the purchased items)], otherwise annotate as [Received all/part of the purchased items]. (If the provide the original package as their supporting documents, it can be used as a reference also.)</p>
+                                <ol>
+                                    <li>The complete video of the machine being taken out of the packaging (the video should include the shipping label, return label, outer packaging SN code, and device SN code)</li>
+                                    <li>The shipping package tracking number and the PO details match.</li>
+                                    <li>The return package tracking number and the PO details match.</li>
+                                    <li>The SN code on the device does not match the SN code on the outer packaging.</li>
+                                </ol>
+                            </li>
+                        </ol>
+                                
+                        <p><strong>Examples of Evidence Images:</strong></p>
+                        <p>Shipping Tracking Number: G9940702</p>
+                        <p>Returning Tracking Number：1ZB688Y36812612128</p>
+                        <p>SN Code on the Packaging: T2436000406</p>
+                        <p>SN Code on the Machine：Z2U10201004806</p>
+                    `
+                },
+                {
+                    id: 'high-rejection-rate',
+                    title: 'High Rejection Rate Merchants',
+                    icon: 'fa-exclamation-triangle',
+                    summary: 'Special procedures for merchants with high rejection rates.',
+                    section: 'Proof Standards',
+                    content: `
+                        <h3>Annotation Rules for Merchants with High Rejection Rates</h3>
+                        <p><strong>Background:</strong> For "Local merchants / semi-managed" orders, in cases of the rejection in second review that result in external complaints, it was found that some merchants deliberately acted maliciously, resulting in unreasonable refusal of after-sales service; therefore, the [high rejection rate merchant] label was launched to provide a warning.</p>
+                        <p><strong>Commonalities of such merchants:</strong> They failed to provide a clear and visible return label, making it impossible to prove that the package was indeed returned by the user, and the same evidence was used in multiple cases.</p>
+                                
+                        <table>
+                            <tr>
+                                <th>Reasons involved to reject after-sales services</th>
+                                <th>Features of evidence provided</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <ul>
+                                        <li>Package returned by the user is empty</li>
+                                        <li>Returned item does not match</li>
+                                        <li>Returned item is damaged</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li>Only one picture of an empty package is provided, but it cannot be proven that it was sent back by the user in the current case.</li>
+                                        <li>Only one return package unboxing video is provided, but the return label information is not clearly visible.</li>
+                                        <li>The merchant provided 1 return label and 1 photo of the package after it was opened, but the two cannot be linked.</li>
+                                        <li>The merchant provided a return label that was almost brand new and a video of a return package being opened, but the return label in that video was not legible, and the two could not be linked, nor could it be proven that the return was sent by the current user.</li>
+                                        <li>One picture of a damaged / obviously used product is provided, but it cannot be proven that it was sent back by the current user in this case.</li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </table>
+                                
+                        <p><strong>Where is the label:</strong> It is right beside the name of the merchant on the annotation workbench, under annotation tasks under the category "Local Merchats - Warehouse quality inspection of consumer returns - Customer Service Second Review", seen in the following screenshots.</p>
+                                
+                        <h5>Processing standards for annotation tickets:</h5>
+                        <p>① When the label "high rejection rate merchant" is applied, in the rejection scenarios of "returning an empty package", "returning a mismatched item", and "having already sent the correct item", in addition to meeting the evidence requirements listed in the "5.4.2 [Local Merchants] Second Review of Merchant Appeal for Allegedly Missing Items in Returned Goods" under "5. Standards for Evidence", all of the following conditions must also be met in order to annotate the case as "None of the items has been received (or the returned items are not the purchased items)"; otherwise, it must be annotated as "All/some of the purchased items have been received."</p>
+                        <ul>
+                            <li>A clearly visible return label is provided, which matches the "return tracking number" displayed on the workbench.</li>
+                            <li>It can be proven that the returned items do not match or that the return package is empty, and that this was verified by unpacking the package returned by the user. (The unpacking video must be complete and continuous, with the entire unpacking process visible throughout.)</li>
+                        </ul>
+                                
+                        <p>②When the label "high return rejection rate merchant" is applied, in the scenario of "Returned item damaged" / other reasons for rejection, in addition to meeting the evidence requirements listed in the "5.4.2 [Local Merchants] Second Review of Merchant Appeal for Allegedly Missing Items in Returned Goods" under "5. Standards for Evidence", all of the following conditions must also be met in order to annotate it as "All / some of the purchased items have been received", and fill in the "Number of items that affect resale" and "Number of items that do not affect resale" based on facts. Otherwise, "All / some of the purchased items have been received" and "Number of items that affect resale" should be annotated as 0.</p>
+                        <ul>
+                            <li>A clearly visible return label is provided, which matches the "return tracking number" displayed on the workbench.</li>
+                            <li>It can be proven that the returned items damaged / the returned items affect resale, and that this was verified by unpacking the package returned by the user. (The unpacking video must be complete and continuous, with the entire unpacking process visible throughout.)</li>
+                        </ul>
+                    `
+                },
+                {
+                    id: 'precious-metals',
+                    title: 'Precious Metals',
+                    icon: 'fa-gem',
+                    summary: 'Special rules for precious metal returns.',
+                    section: 'Proof Standards',
+                    content: `
+                        <h3>Annotation Rules for [precious metals]</h3>
+                        <p><strong>Background:</strong> For precious metal goods return and refund, due to their high value, the annotation process needs to be modified. And customer service are allowed to manually enter the refund percentage.</p>
+                        <p>Precious metal products are indicated as shown in the image below:</p>
+                        <p>You can manually enter the refund ratio, as shown below:</p>
+                                
+                        <p>Only in Step 2, the annotation of the [Number of items affecting resale] differs, while the rest remains consistent with other products.</p>
+                                
+                        <table>
+                            <tr>
+                                <th>annotation item</th>
+                                <th>The merchant needs to provide supporting documents</th>
+                            </tr>
+                            <tr>
+                                <td>Step 2<br>If it is confirmed that all/some of the items purchased in the order have been returned, please further annotate the quantity of items received by the warehouse that affect/do not affect secondary sales.<br>The quantity that affects secondary sales<br>The deduction ratio for N items affecting secondary sales</td>
+                                <td>[For the "Japanese Local Merchant Products" category only]<br><br>When a product falls under both the "Precious Metals" category and the "Japanese Local Merchant Products" category, if it has been unsealed, it can be marked as [Number of items affecting resale], with a 50% deduction.<br>[For the "Japanese Local Merchant Products" category only]<br>Tamper-proof seals, shrink wrap, or non-resealable packaging have been unsealed.<br>50% deduction<br>1. A clear photo of the return shipping label<br>2. A complete unboxing video showing both the shipping label and the unboxing process<br><br>Anything that can be proven is marked as [Number of items affecting resale]<br>1. Certificate lost<br>2. Minor damage - scratches<br>3. Severe damage - bent or broken<br>4. Weight reduced</td>
+                            </tr>
+                        </table>
+                                
+                        <div class="note-box">
+                            <p><strong>Note:</strong></p>
+                            <ol>
+                                <li>If the merchant rejects the return because the returned product is damaged, please confirm whether the user's reason for requesting after-sales service is [quality issue/product defect]/[missing items/accessories] If so, it indicates that the product may have been damaged/defective or was missing items/accessories when the user received it. In this case, please check the chat record to verify if the product issues reported by the merchant match those reported by the user. If they do, please mark it as【Number of items not affecting resale】</li>
+                            </ol>
+                        </div>
+                                
+                        <table>
+                            <tr>
+                                <th>Certificate lost</th>
+                                <td>You can verify from the merchant's shipping evidence or product details whether the item included a certificate at the time of shipment. If this cannot be confirmed, ignore this deduction.<br>10% deduction</td>
+                            </tr>
+                            <tr>
+                                <th>Minor damage - scratches, slight bending</th>
+                                <td>10% deduction</td>
+                            </tr>
+                            <tr>
+                                <th>Severely damaged - bent, broken</th>
+                                <td>30% deduction</td>
+                            </tr>
+                            <tr>
+                                <th>The weight of per unit has decreased</th>
+                                <td>The deduction ratio is:<br>100% - (Weight of returned item / Original weight of the item)%<br><br>At the time of shipment:<br>- The physical product is weighed and photographed with the product certificate (the number is clearly visible)<br>- Shipping label for logistics<br>When returning:<br>- Return shipping label<br>- Return quantity weight measurement picture<br>- Complete unboxing video of the return (showing the shipping label, unboxing, and weighing of the product)<br>- Product certificate photo (if applicable) (showing the serial number clearly)</td>
+                            </tr>
+                        </table>
+                                
+                        <div class="note-box">
+                            <p><strong>Note:</strong></p>
+                            <ol>
+                                <li>Weight difference less than 0.1g can be ignored.</li>
+                                <li>Final refund ratio for a single item
+                                    <ul>
+                                        <li>Items only in the "Precious Metals" category: 100% − sum of all deduction ratios.
+                                            <ul>
+                                                <li>Example: One item with a missing certificate (10% deduction) and weight reduced from 100g to 70g (deduction = 100% − (70/100) = 30%). Final refund ratio = 100% − (10% + 30%) = 60%.</li>
+                                            </ul>
+                                        </li>
+                                        <li>Items in both "Precious Metals" and "Japanese Local Merchant Products" categories: Compare the deduction ratio for "tamper-proof seal/outer plastic shrink wrap unsealed" with the deduction ratios of other annotation steps, and take the maximum.
+                                            <ul>
+                                                <li>Example: One item falls under both categories, is unsealed (50% deduction), and has a missing certificate (10% deduction). Final refund ratio = 100% − max(50%, 10%) = 50%.</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>Refund calculation at the sub-refund level: Since the annotation center currently supports only integer refund amounts, please use the rounding rule (round half up) to calculate the final amount.
+                                    <ul>
+                                        <li>Example: A user purchases 2 items:<br>Item 1: Missing certificate (10% deduction) + minor scratches (10% deduction) = 80% [100% − (10% + 10%) = 80%]<br>Item 2: Severe damage (30% deduction) + weight reduced by 30% (30% deduction) = 40% [100% − (30% + 30%) = 40%]<br>Final refund ratio for the 2 items affecting resale = 60% [(80% + 40%) / 2 = 60%]</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </div>
+                                
+                        <p>If the reason for after-sales is a quality issue or missing items/accessories:</p>
+                        <p>When it is shipped：</p>
+                        <ul>
+                            <li>Shipping photo/video (showing the product is intact/complete)</li>
+                            <li>Shipping label for logistics</li>
+                        </ul>
+                        <p>When returning:</p>
+                        <ul>
+                            <li>Return shipping label</li>
+                            <li>Complete video of unboxing the returned package</li>
+                        </ul>
+                    `
+                },
+                {
+                    id: 'wig-products',
+                    title: 'Wig Products',
+                    icon: 'fa-user-tie',
+                    summary: 'Special rules for wig product returns.',
+                    section: 'Proof Standards',
+                    content: `
+                        <h3>Annotation Rules for [wig products]</h3>
+                        <p>Step 1:</p>
+                        <ul>
+                            <li>For wig products, customer service should check the mall ID. If the mall ID is one of the following: 634418217066498, 634418216283083, 634418214716867, or 634418216177352, proceed to Step 2. If it does not match these IDs, handle according to the standard process.</li>
+                            <li>For sellers of wig-related products and labelled "Merchants with high rejection rate" label, proceed to Step 2 as well. If there is no such label, handle according to the standard process.</li>
+                        </ul>
+                        <p>Step 2:</p>
+                        <p>Check the user's tier (risk level).</p>
+                        <ul>
+                            <li>If the user is in C3-C5, or in C1-C2 and passes risk control, mark "Received all/part of the purchased item" and fill in "Number of items not affecting resale" and approve the refund request.</li>
+                            <li>If the user is in C1-C2 and fails to pass risk control, check the merchant's evidence. If the merchant provides a complete unboxing video with the unboxing process clearly visible, proceed with the standard process. If the merchant cannot provide a complete unboxing video, or if the unboxing is not visible, mark "Received all/part of the purchased item" and fill in "Number of items not affecting resale".</li>
+                        </ul>
+                    `
+                },
+                {
+                    id: 'iphones',
+                    title: 'iPhones',
+                    icon: 'fa-mobile-alt',
+                    summary: 'Special rules for iPhone returns.',
+                    section: 'Proof Standards',
+                    content: `
+                        <h3>Annotation Rules for [iPhones]</h3>
+                        <h5>Labeling page for special products</h5>
+                        <h5>Special Product Supporting Documents Evaluation Criteria</h5>
+                        <p><strong>Note:</strong> Step 1: Please follow the same criteria for using the [Received all/part of the purchased items] label. iPhone products are only subject to different criteria for using the [Number of items affecting resale] label.</p>
+                                
+                        <table>
+                            <tr>
+                                <th>Steps</th>
+                                <th>Labels</th>
+                            </tr>
+                            <tr>
+                                <td>Step 2<br>If it is confirmed that all or part of the products purchased in the sub-order have been returned, further indicate the number of items received by the warehouse that affect/do not affect resale.<br>Number of items affecting resale<br>Deduction percentages for items affecting resale</td>
+                                <td>[For Japan Local Merchant items only]<br>If a product falls under both the "iPhone" category and the "Japan Local Merchant item" category, a 50% deduction applies for unsealed items.<br>[For Japan Local Merchant items only] Tamper-evident seal/plastic wrap/non-resealable packaging has been opened<br><br>How to determine if it has been opened:<br>1. If the return evidence clearly shows that the tamper-evident seal/plastic wrap/non-resealable packaging has been opened, it is considered opened.<br>2. If it is unclear from the return evidence whether the tamper-evident seal/plastic wrap/non-resealable packaging has been opened:<br>  a. If the merchant provides shipping photos/videos proving the product had intact tamper-evident seal/plastic wrap/non-resealable packaging before shipment, it is considered opened, and a 50% deduction applies.<br>  b. If the merchant cannot provide such proof, it is considered indeterminate, and no 50% deduction is applied.<br><br>50%<br><br>Use the [Number of items affecting resale] label if the image/video can prove the following:<br>- Already activated<br>- The iCloud account has not been logged out, the device has been used and shows obvious signs of use, parts are damaged or not functioning properly, or the device has been disassembled and returned.<br>- No cable or returned in non-original packaging.<br>- The phone has been activated.<br>- The returned phone does not have the original order's SN/IMEI code (i.e., not the original phone).<br><br>Already activated<br>20%<br><br>The iCloud account has not been logged out, the device has been used and shows obvious signs of use, parts are damaged or not functioning properly, or the device has been disassembled and returned.<br>80%<br><br>No cable or returned in non-original packaging.<br>5%<br><br>The phone has been activated & no cable or returned in non-original packaging.<br>25%<br><br>The returned phone does not have the original order's SN/IMEI code (i.e., not the original phone).<br>How merchants can prove the shipped item's SN or IMEI code:<br>In addition to shipping photos or videos, merchants may also submit the seller note on the order page as evidence. If there are multiple notes, the one recorded closest to but before the shipment time will be considered the valid SN or IMEI code.<br>100%<br><br>iCloud account not signed out / phone cannot be unlocked (e.g., with a screen passcode), making it impossible to resell<br>100%</td>
+                            </tr>
+                        </table>
+                                
+                        <div class="note-box">
+                            <p><strong>Note</strong></p>
+                            <ol>
+                                <li>When a single product falls under both the "iPhone" category and the "Japan Local Merchant item" category, compare the deduction percentage for "tamper-evident sticker/outer plastic wrapping opened" with other deduction percentages, and apply the highest deduction.
+                                    <ul>
+                                        <li>a. Example 1: Product is both opened (50% deduction) and activated (20% deduction). Final refund = 100% – max (50%, 20%) = 50%.</li>
+                                        <li>b. Example 2: Product is both opened (50% deduction) and iCloud not logged out (100% deduction). Final refund = 100% – max (50%, 100%) = 0%.</li>
+                                    </ul>
+                                </li>
+                                <li>Refund calculation logic for multiple items<br>Since the current labeling center only supports whole-number refund amounts, please calculate the final amount using rounding logic.<br>Example:<br>A user purchases two iPhone products, one is returned already activated (20% deduction), and the other is returned in non-original packaging (5% deduction).<br>The final refund ratio for the two items affecting resale would be 88% [(100%-20%)+(100%-5%))/2=87.5%]</li>
+                            </ol>
+                        </div>
+                    `
+                },
+                {
+                    id: 'brand-new-3c',
+                    title: 'Brand New 3C Products',
+                    icon: 'fa-laptop',
+                    summary: 'Special rules for brand new 3C electronic product returns.',
+                    section: 'Proof Standards',
+                    content: `
+                        <h3>Annotation Rules for [brand new 3C products]</h3>
+                        <p><strong>Note:</strong> For this category, you do not need to calculate the deduction percentage.</p>
+                                
+                        <table>
+                            <tr>
+                                <th>Steps</th>
+                                <th>Annotations</th>
+                            </tr>
+                            <tr>
+                                <td>Step 2<br>If it's confirmed that all or part of the items from the sub-order were returned, further annotate the number of items received by the warehouse that affect/do not affect resale.<br>Number of items affecting resale<br>Deduction percentages for the N items that affect resale. (Not applicable for BPO)</td>
+                                <td>Image examples<br>If the image/video evidence confirms any of the following conditions, annotate the corresponding items with "Number of items affecting resale":<br>- The tamper-evident seal/plastic wrapping has been removed. (If the product doesn't have a tamper-evident seal but the outer packaging is wrapped in plastic, this should still be marked if the plastic wrap has been removed)<br>- There are minor scratches on the screen or body<br>- The screen or device is severely damaged and cannot be powered on<br>- The phone has been activated<br>- The product's original branded packaging box is visibly crushed, damaged, or missing<br>- Accessories are severely damaged or missing (limited to earphones, remote controls, chargers, data cables, power cords, protective cases, and TV stands)<br><br>Tamper-evident seal/plastic wrap/non-resealable packaging has been opened<br><br>How to determine if it has been opened:<br>1. If the return evidence clearly shows that the tamper-evident seal/plastic wrap/non-resealable packaging has been opened, it is considered opened.<br>2. If it is unclear from the return evidence whether that the tamper-evident seal/plastic wrap/non-resealable packaging has been opened:<br>  a. If the merchant provides shipping photos/videos proving the product had intact tamper-evident seal/plastic wrap/non-resealable packaging before shipment, it is considered opened, and a 50% deduction applies.<br>  b. If the merchant cannot provide such proof, it is considered indeterminate, and no 50% deduction is applied.<br><br>Regular products: 10% deduction<br>["Japan Local Merchant items" only]: 50% deduction<br><br>There are minor scratches on the screen and body.<br>20%<br><br>The screen is visibly cracked and the device is clearly damaged, but it can still be powered on.<br>50%<br><br>The screen or device is severely damaged and cannot be powered on.<br>100%<br><br>The phone or other electronic device has already been activated.<br><br>Note: If you check "Activated", you do not need to check "Opened", otherwise deductions may be applied twice.<br>20%<br><br>The product's original branded packaging box is visibly crushed, damaged, or missing<br>10% (with a maximum deduction of $25)<br><br>Accessories are severely damaged or missing (limited to earphones, remote controls, chargers, data cables, power cords, protective cases, and TV stands)<br>20% (with a maximum deduction of $20)</td>
+                            </tr>
+                        </table>
+                                
+                        <div class="note-box">
+                            <p><strong>Note:</strong> For damaged or missing accessories, customer service should verify the accessory list on the product details page, or the seller should provide product instructions as evidence.</p>
+                        </div>
+                                
+                        <div class="note-box">
+                            <p><strong>1. Refund calculation logic for a single product</strong></p>
+                            <ul>
+                                <li>Regular 3C products: Add up the deduction percentages for all selected marked issues. If the total exceeds 100%, cap the deduction at 100%.</li>
+                                <li>If a single product falls under both the "Japan Local Merchant item" category and the "3C product" category, compare the deduction percentage for "tamper-evident sticker/outer plastic wrapping opened" (50%) with other deduction percentages, and apply the highest deduction.
+                                    <ul>
+                                        <li>Example 1: Product has removed sticker (50% deduction), minor scratches (20%), and is activated (20%). Final refund = 100% – max (50%, 20%+20%) = 50%.</li>
+                                        <li>Example 2: Product has removed sticker (50%) and severe screen/device damage (100%). Final refund = 100% – max (50%, 100%) = 0%.</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <p><strong>2. Refund calculation logic for multiple items</strong><br>Since the current labeling center only supports whole-number refund amounts, please calculate the final amount using rounding logic.<br>Example:<br>A user purchases two products, one is returned already activated (20% deduction), and the other is returned with a clearly cracked screen but still powers on (50% deduction).<br>The final refund ratio for the two items affecting resale would be: ((100%-20%) + (100%-50%))/2 = 65%</p>
+                        </div>
+                                
+                        <p>If the product purchased by the user has both a lost seal and meets the criteria for severely damaged or missing parts, both options need to be selected.</p>
+                    `
+                },
+                {
+                    id: 'furniture',
+                    title: 'Furniture',
+                    icon: 'fa-couch',
+                    summary: 'Special rules for furniture returns.',
+                    section: 'Proof Standards',
+                    content: `
+                        <h3>Annotation Rules for [furniture]</h3>
+                        <table>
+                            <tr>
+                                <th>Description and criteria</th>
+                                <th>Evidence required</th>
+                                <th>Deduction</th>
+                                <th>Example images</th>
+                            </tr>
+                            <tr>
+                                <td>1. The product is intact, or the missing parts are low-cost and easy to replace<br>- Such as a few screws, nuts, standard connectors, or a user manual.</td>
+                                <td>No additional evidence is required (though the merchant may verify the original list of included parts)</td>
+                                <td>0%</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>2. Only appearance affected: Functionality, structural stability, or safety not impacted<br>- Minor surface scratches or light scuff marks<br>- Minor wear or fading of the paint surface (small areas)<br>- Minor pilling or thread pulls in the fabric (not widespread)<br>- Slight and recoverable deformation (e.g., minor indentations in cushions)<br>- Small stains (can be cleaned)</td>
+                                <td>- Photo of the return shipping label<br>- Clear close-up photo or video of the damaged area (damage details must be visible)</td>
+                                <td>10%</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>3. Minor damage: The item has limited localized damage (1–2 spots), typically repairable at low cost<br>- Localized breakage of the support structure (e.g., a crack in a chair leg or a broken table corner)<br>- Noticeable surface damage, dents, or cracks<br>- Localized collapse of filling materials (e.g., one area of a sofa cushion)<br>- Severe localized contamination (cannot be cleaned)</td>
+                                <td>- Photo of the return shipping label<br>- Clear close-up photo or video of the damaged area, showing the exact location, quantity, and extent of the damage</td>
+                                <td>20%</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>4. Moderate damage: Multiple damaged areas (3 or more) that affect functionality, structural stability, or safety<br>- Multiple surface damages, cracks, or severe dents<br>- Multiple breakages or deformations in the support structure, affecting stability<br>- Large-area collapse or exposure of filling materials<br>- Severe contamination covering a large area</td>
+                                <td>- Photo of the return shipping label<br>- Clear close-up photo or video of the main damaged areas, showing multiple points of damage</td>
+                                <td>35%</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>5. Severe damage: The item is beyond repair or resale, with serious impact on functionality, stability, or safety<br>- Severe damage, breakage, or disassembly of the main structure<br>- Severely damaged surface beyond repair<br>- Significant loss or severe contamination of filling materials</td>
+                                <td>- Photo of the return package's shipping label<br>- Clear close-up photo or video of the severely damaged area, showing the critical damage that caused the item to be unsalvageable</td>
+                                <td>50%</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>6. Missing or damaged key components<br>- Missing or unusable critical connectors or parts that affect assembly, core functions, safety, or normal use—such as support legs, armrests, back panels, door panels, drawer fronts, motors (for electric furniture), remote controls, or specialized metal hardware</td>
+                                <td>- Photo of the return shipping label<br>- Close-up photo or video of the damaged component, or a reference image showing its original condition (to confirm the missing or damaged part)</td>
+                                <td>Deductions based on the number of missing or damaged main components:<br>- 1 main component missing/damaged: 15% deduction<br>- 2 main components missing/damaged: 30% deduction<br>- 3 or more main components missing/damaged: up to 30% deduction</td>
+                                <td></td>
+                            </tr>
+                        </table>
+                                
+                        <div class="note-box">
+                            <p><strong>Note:</strong> Among options 1 to 6 in the evaluation criteria, only one can be selected at a time.</p>
+                        </div>
+                    `
+                },
+                {
+                    id: 'blind-boxes-game-cartridges',
+                    title: 'Blind Boxes & Game Cartridges',
+                    icon: 'fa-gamepad',
+                    summary: 'Special rules for blind box and game cartridge returns.',
+                    section: 'Proof Standards',
+                    content: `
+                        <h3>Annotation Rules for [blind boxes and game cartridges]</h3>
+                        <p><strong>Background:</strong> For blind boxes and game cartridge products, once opened, they cannot be resold. Opened items incur a 100% deduction. (You do not need to calculate deduction percentages for this category.)</p>
+                        <p>Blind boxes are indicated as shown in the image below:</p>
+                        <p>Game cartridges are indicated as shown in the image below:</p>
+                                
+                        <table>
+                            <tr>
+                                <th>Scenario affecting resale</th>
+                                <th>Deduction (not applicable for BPO)</th>
+                                <th>Example</th>
+                            </tr>
+                            <tr>
+                                <td>Opened</td>
+                                <td>100%</td>
+                                <td>Blind box:<br><br>Game cartridge:</td>
+                            </tr>
+                            <tr>
+                                <td>Unopened but other resale issues<br>(Examples: severe damage to outer packaging such as large dents, breakage, visible stains, or graffiti, making the item unsellable as new.)</td>
+                                <td>50%</td>
+                                <td></td>
+                            </tr>
+                        </table>
+                                
+                        <p>Annotation page:</p>
+                    `
+                },
+                {
+                    id: 'japan-local-merchant',
+                    title: 'Japan Local Merchant Items',
+                    icon: 'fa-torii-gate',
+                    summary: 'Special rules for Japan local merchant items.',
+                    section: 'Proof Standards',
+                    content: `
+                        <h3>Annotation Rules for [Japan Local Merchant items]</h3>
+                        <p><strong>Background:</strong> Some Japan-site local merchant products (marked "Japan Local Merchant item") incur a 50% deduction if the tamper-evident seal/plastic wrap/non-resealable packaging has been opened.</p>
+                        <p>If a product belongs to both Japan Local Merchant item and another category and is opened, apply the higher deduction between 50% (for opening) and the deduction under the other category.</p>
+                        <p>Example: A product categorized as both iPhone and Japan Local Merchant item is opened (50% deduction) and activated (20% deduction). Final refund = 100% – max (50%, 20%) = 50%.</p>
+                        <p><strong>How to determine if it is opened:</strong></p>
+                        <ol>
+                            <li>If the return evidence clearly shows that the tamper-evident seal/plastic wrap/non-resealable packaging has been opened, it is considered opened.</li>
+                            <li>If it is impossible to determine based on the return evidence:
+                                <ol>
+                                    <li>If the merchant provides shipping photos/videos proving the tamper-evident seal/plastic wrap/non-resealable packaging was intact before shipment, it is considered opened, and a 50% deduction applies.</li>
+                                    <li>If the merchant cannot provide such proof, it is considered indeterminate, and no 50% deduction is applied.</li>
+                                </ol>
+                            </li>
+                        </ol>
+                        <p><strong>Example of non-resealable packaging:</strong></p>
+                        <p>Japan Local Merchant items are indicated as shown in the image below:</p>
+                                
+                        <h5>Handling procedures:</h5>
+                        <ul>
+                            <li>If the product falls under both Japan Local Merchant and iPhone, refer to the Annotation rules for [iPhones] in this Knowledge Base entry.</li>
+                            <li>If the product falls under both Japan Local Merchant and 3C (high-value) products, refer to the Annotation rules for [brand new 3C products].</li>
+                            <li>When a product falls under both the Japanese Local Merchant Products category and the Precious Metals category, please refer to the Annotation rules for [Precious Metals Products].</li>
+                            <li>If the product falls under both Japan Local Merchant and regular products, do not change the annotation. However, if there is evidence the tamper-evident seal/plastic wrap/non-resealable packaging has been opened, mark it as "Affects resale".</li>
+                        </ul>
+                    `
+                }
+            ];
 
-    function calculateVolume(length, width, height) {
-      length = length || 1; // Default to 1 if missing
-      width = width || 1; // Default to 1 if missing
-      height = height || 1; // Default to 1 if missing
-      return length * width * height;
-    }
+            // DOM elements
+            const categoryList = document.getElementById('categoryList');
+            const contentArea = document.getElementById('contentArea');
+            const searchInput = document.getElementById('searchInput');
+            const searchBtn = document.getElementById('searchBtn');
 
-    function compareSizes() {
-      // Temu Bag Dimensions with Conversion to cm
-      const temuLength = parseFloat(document.getElementById("temu-length").value) || 0;
-      const temuWidth = parseFloat(document.getElementById("temu-width").value) || 0;
-      const temuHeight = parseFloat(document.getElementById("temu-height").value) || 0;
-      const temuUnit = document.getElementById("temu-unit").value;
+            // Initialize the page
+            function init() {
+                renderCategories(categories);
+                setupEventListeners();
+            }
 
-      // Other Bag Dimensions with Conversion to cm
-      const otherLength = parseFloat(document.getElementById("other-length").value) || 0;
-      const otherWidth = parseFloat(document.getElementById("other-width").value) || 0;
-      const otherHeight = parseFloat(document.getElementById("other-height").value) || 0;
-      const otherUnit = document.getElementById("other-unit").value;
+            // Render categories in the sidebar
+            function renderCategories(categoriesToRender) {
+                categoryList.innerHTML = '';
+                
+                // Group categories by section
+                const sections = {};
+                
+                categoriesToRender.forEach(category => {
+                    const section = category.section || 'General Rules';
+                    if (!sections[section]) {
+                        sections[section] = [];
+                    }
+                    sections[section].push(category);
+                });
+                
+                // Render sections and categories
+                Object.keys(sections).forEach(sectionName => {
+                    if (sectionName !== 'General Rules') {
+                        const sectionDiv = document.createElement('div');
+                        sectionDiv.className = 'category-section';
+                        
+                        const sectionTitle = document.createElement('div');
+                        sectionTitle.className = 'category-section-title';
+                        sectionTitle.textContent = sectionName;
+                        sectionDiv.appendChild(sectionTitle);
+                        
+                        const sectionList = document.createElement('ul');
+                        sectionList.className = 'category-list';
+                        
+                        sections[sectionName].forEach(category => {
+                            const li = document.createElement('li');
+                            li.className = 'category-item';
+                            
+                            const a = document.createElement('a');
+                            a.href = `#${category.id}`;
+                            a.className = 'category-link';
+                            a.dataset.id = category.id;
+                            a.innerHTML = `<i class="fas ${category.icon}"></i> ${category.title}`;
+                            
+                            li.appendChild(a);
+                            sectionList.appendChild(li);
+                        });
+                        
+                        sectionDiv.appendChild(sectionList);
+                        categoryList.appendChild(sectionDiv);
+                    }
+                });
+                
+                // Render General Rules section
+                if (sections['General Rules']) {
+                    const generalSection = document.createElement('div');
+                    generalSection.className = 'category-section';
+                    
+                    const generalTitle = document.createElement('div');
+                    generalTitle.className = 'category-section-title';
+                    generalTitle.textContent = 'General Rules';
+                    generalSection.appendChild(generalTitle);
+                    
+                    const generalList = document.createElement('ul');
+                    generalList.className = 'category-list';
+                    
+                    sections['General Rules'].forEach(category => {
+                        const li = document.createElement('li');
+                        li.className = 'category-item';
+                        
+                        const a = document.createElement('a');
+                        a.href = `#${category.id}`;
+                        a.className = 'category-link';
+                        a.dataset.id = category.id;
+                        a.innerHTML = `<i class="fas ${category.icon}"></i> ${category.title}`;
+                        
+                        li.appendChild(a);
+                        generalList.appendChild(li);
+                    });
+                    
+                    generalSection.appendChild(generalList);
+                    categoryList.appendChild(generalSection);
+                }
+            }
 
-      // Convert all dimensions to centimeters
-      const convertedTemuLength = convertToCm(temuLength, temuUnit);
-      const convertedTemuWidth = convertToCm(temuWidth, temuUnit);
-      const convertedTemuHeight = convertToCm(temuHeight, temuUnit);
+            // Display content of a selected category
+            function displayCategory(categoryId, subcategoryId = null) {
+                const category = categories.find(cat => cat.id === categoryId);
+                if (!category) return;
+                
+                // Update active state in sidebar
+                document.querySelectorAll('.category-link').forEach(link => {
+                    link.classList.remove('active');
+                    if (link.dataset.id === categoryId) {
+                        link.classList.add('active');
+                    }
+                });
+                
+                // If category has subcategories and no subcategory is selected, show subcategory grid
+                if (category.hasSubcategories && !subcategoryId) {
+                    displaySubcategoryGrid(category);
+                    return;
+                }
+                
+                // If subcategory is selected, display its content
+                if (subcategoryId && category.subcategories) {
+                    const subcategory = category.subcategories.find(sub => sub.id === subcategoryId);
+                    if (subcategory) {
+                        displaySubcategoryContent(category, subcategory);
+                        return;
+                    }
+                }
+                
+                // Display regular category content
+                contentArea.innerHTML = `
+                    <div class="content-header">
+                        <h2 class="content-title">${category.title}</h2>
+                        <div class="last-updated">Last updated: September 25, 2023</div>
+                    </div>
+                    <div class="rule-content">
+                        ${category.content}
+                    </div>
+                `;
+                
+                // Scroll to top of content area
+                contentArea.scrollTop = 0;
+            }
 
-      const convertedOtherLength = convertToCm(otherLength, otherUnit);
-      const convertedOtherWidth = convertToCm(otherWidth, otherUnit);
-      const convertedOtherHeight = convertToCm(otherHeight, otherUnit);
+            // Display subcategory grid
+            function displaySubcategoryGrid(category) {
+                contentArea.innerHTML = `
+                    <div class="content-header">
+                        <h2 class="content-title">${category.title}</h2>
+                        <div class="last-updated">Last updated: September 25, 2023</div>
+                    </div>
+                    <div class="rule-content">
+                        <p>${category.summary}</p>
+                        <div class="subcategory-grid">
+                            ${category.subcategories.map(sub => `
+                                <div class="subcategory-card" onclick="displayCategory('${category.id}', '${sub.id}')">
+                                    <h4><i class="fas ${sub.icon}"></i> ${sub.title}</h4>
+                                    <p>${sub.summary}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                
+                // Scroll to top of content area
+                contentArea.scrollTop = 0;
+            }
 
-      // Calculate Volumes in cm³
-      const volume1 = calculateVolume(convertedTemuLength, convertedTemuWidth, convertedTemuHeight);
-      const volume2 = calculateVolume(convertedOtherLength, convertedOtherWidth, convertedOtherHeight);
+            // Display subcategory content
+            function displaySubcategoryContent(category, subcategory) {
+                contentArea.innerHTML = `
+                    <div class="breadcrumb">
+                        <a href="#" onclick="displayCategory('${category.id}')">${category.title}</a>
+                        <span class="separator"><i class="fas fa-chevron-right"></i></span>
+                        <span>${subcategory.title}</span>
+                    </div>
+                    <div class="content-header">
+                        <h2 class="content-title">${subcategory.title}</h2>
+                        <div class="last-updated">Last updated: September 25, 2023</div>
+                    </div>
+                    <div class="rule-content">
+                        ${subcategory.content}
+                    </div>
+                `;
+                
+                // Scroll to top of content area
+                contentArea.scrollTop = 0;
+            }
 
-      // Calculate Difference Ratio based on Temu's volume
-      const differenceRatio = Math.abs(volume1 - volume2) / volume1 * 100;
+            // Setup event listeners
+            function setupEventListeners() {
+                // Category click event
+                categoryList.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('category-link') || e.target.parentElement.classList.contains('category-link')) {
+                        const link = e.target.classList.contains('category-link') ? e.target : e.target.parentElement;
+                        const categoryId = link.dataset.id;
+                        displayCategory(categoryId);
+                    }
+                });
+                
+                // Search functionality
+                searchBtn.addEventListener('click', performSearch);
+                searchInput.addEventListener('keyup', (e) => {
+                    if (e.key === 'Enter') {
+                        performSearch();
+                    }
+                });
+                
+                // URL hash change event
+                window.addEventListener('hashchange', () => {
+                    const hash = window.location.hash.substring(1);
+                    if (hash) {
+                        const parts = hash.split('/');
+                        const categoryId = parts[0];
+                        const subcategoryId = parts[1] || null;
+                        displayCategory(categoryId, subcategoryId);
+                    }
+                });
+                
+                // Initial hash check
+                const initialHash = window.location.hash.substring(1);
+                if (initialHash) {
+                    const parts = initialHash.split('/');
+                    const categoryId = parts[0];
+                    const subcategoryId = parts[1] || null;
+                    displayCategory(categoryId, subcategoryId);
+                }
+            }
 
-      // Display Result
-      const resultDiv = document.getElementById("result");
-      if (differenceRatio < 20) {
-        resultDiv.textContent = `Same Size: The difference ratio is ${differenceRatio.toFixed(2)}%.`;
-        resultDiv.style.color = "#80e27e"; // Green for Same
-      } else {
-        resultDiv.textContent = `Not Same Size: The difference ratio is ${differenceRatio.toFixed(2)}%.`;
-        resultDiv.style.color = "#e57373"; // Red for Not Same
-      }
-    }
-  </script>
+            // Perform search
+            function performSearch() {
+                const query = searchInput.value.trim().toLowerCase();
+                if (!query) {
+                    renderCategories(categories);
+                    return;
+                }
+                
+                // Flatten all categories and subcategories for search
+                const allCategories = [];
+                
+                categories.forEach(category => {
+                    allCategories.push({
+                        id: category.id,
+                        title: category.title,
+                        icon: category.icon,
+                        content: category.content,
+                        summary: category.summary,
+                        hasSubcategories: false,
+                        section: category.section
+                    });
+                    
+                    if (category.subcategories) {
+                        category.subcategories.forEach(subcategory => {
+                            allCategories.push({
+                                id: `${category.id}/${subcategory.id}`,
+                                title: `${category.title} > ${subcategory.title}`,
+                                icon: subcategory.icon,
+                                content: subcategory.content,
+                                summary: subcategory.summary,
+                                hasSubcategories: false,
+                                section: category.section,
+                                categoryId: category.id,
+                                subcategoryId: subcategory.id
+                            });
+                        });
+                    }
+                });
+                
+                const filteredCategories = allCategories.filter(category => {
+                    const titleMatch = category.title.toLowerCase().includes(query);
+                    const contentMatch = category.content.toLowerCase().includes(query);
+                    const summaryMatch = category.summary && category.summary.toLowerCase().includes(query);
+                    return titleMatch || contentMatch || summaryMatch;
+                });
+                
+                // Render filtered categories
+                renderCategories(filteredCategories.map(cat => ({
+                    id: cat.id,
+                    title: cat.title,
+                    icon: cat.icon,
+                    hasSubcategories: cat.hasSubcategories,
+                    subcategories: cat.subcategories,
+                    section: cat.section
+                })));
+                
+                // If only one result, display it automatically
+                if (filteredCategories.length === 1) {
+                    const result = filteredCategories[0];
+                    if (result.categoryId && result.subcategoryId) {
+                        displayCategory(result.categoryId, result.subcategoryId);
+                    } else {
+                        displayCategory(result.id);
+                    }
+                } else if (filteredCategories.length === 0) {
+                    contentArea.innerHTML = `
+                        <div class="welcome-message">
+                            <i class="fas fa-search"></i>
+                            <h2>No Results Found</h2>
+                            <p>No rules match your search query. Please try different keywords.</p>
+                        </div>
+                    `;
+                }
+            }
+
+            // Initialize the application
+            init();
+        });
+    </script>
 </body>
 </html>
